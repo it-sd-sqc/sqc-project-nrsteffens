@@ -13,3 +13,4 @@ Items of Interest
 
 Proposed Layout
 ---------------
+![alt text](./ECTrailsSite.jpg "Sample Layout")
