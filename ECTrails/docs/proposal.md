@@ -1,4 +1,4 @@
-ECTrails
+Eau Claire Trails
 ========
 This site is an interactive map of bike trails in and surrounding Eau Claire, Wisconsin.
 
