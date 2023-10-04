@@ -5,7 +5,7 @@ import { parse } from 'node-html-parser'
 
 
 // Configuration ///////////////////////////////////////////
-const srcPath = 'data/book.html'
+const srcPath = 'C:/Users/nstef/Documents/CVTC/SQC/sqc-project-nrsteffens/data/book.html'
 const dstPath = 'docs/generated-schema.sql'
 const chapterIds = [
   '#GR_Chapter_1',
@@ -40,26 +40,6 @@ const extractTitle = function (root, id) {
 const src = readFileSync(srcPath, 'utf8');
 const domRoot = parse(src)
 
-const chapters = []
-
-chapterIds.forEach (
-  (id) => {
-
-    // Extract title
-    const title = extractTitle(domRoot, id)
-
-    chapterIds.push({
-      title
-    })
-  }
-)
-
-// Output the data as SQL.
-const fd = openSync(dstPath, 'w')
-writeFileSync(fd, sqlHeader)
-writeFileSync(fd, `('${chapters[0].index()}', '${chapters[0].title}')`)
-
-closeSync(fd)
 console.log(domRoot);
 
 
