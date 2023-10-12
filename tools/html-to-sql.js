@@ -16,11 +16,3 @@ CREATE TABLE chapter (
   );`
 
 const insertChapterSql = `INSERT INTO words (chapter, body) VALUES`
-
-const gobanConfig = {
-    size: 19,
-    theme: 'classic',
-    coordSystem: 'A1',
-    noMargin: false,
-    hideMargin: false
-  }
