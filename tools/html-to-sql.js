@@ -5,43 +5,38 @@ import { parse } from 'node-html-parser'
 
 
 // Configuration ///////////////////////////////////////////
-const srcPath = 'C:/Users/nstef/Documents/CVTC/SQC/sqc-project-nrsteffens/data/book.html'
-const dstPath = 'C:/Users/nstef/Documents/CVTC/SQC/sqc-project-nrsteffens/data/generated-schema.sql'
+const srcPath = './data/book.html'
+const dstPath = './data/generated-schema.sql'
 
-const src = readFileSync(srcPath, 'utf8');
+const src = readFileSync(srcPath, 'utf8')
 const domRoot = parse(src)
 
 const chapterClass = domRoot.querySelectorAll('.pginternal > span')
 
 
-
 const sqlHeader = `DROP TABLE IF EXISTS chapters;
 
 CREATE TABLE chapters (
-    id SERIAL PRIMARY KEY,
-    chapter text not null
-  );`
+  id SERIAL PRIMARY KEY,
+  chapter text not null
+);
 
+`
 
-const insertStatements = [];
+// REFACTORED: using only a single INSERT statement might improve performance
+let insertChapterSql = ""
 
 for (let i = 0; i < chapterClass.length; i++) {
-  const insertChapterSql = `INSERT INTO chapters (chapter)  VALUES ('${chapterClass[i].innerText}');` 
+  let filteredString = chapterClass[i].innerText.replace(/'/g, "''") // you can escape apostrophe characters (') by doubling them ('') in SQL
 
-  insertStatements.push(insertChapterSql);
+  insertChapterSql += `\n\t('${filteredString}')`
+
+  if (i + 1 < chapterClass.length) {
+    insertChapterSql += ","
+  }
 }
 
-const sqlInsertStatements = insertStatements.join('\n')
+const sqlInsertStatement = `INSERT INTO chapters (chapter) VALUES ${insertChapterSql};`
 
 writeFileSync(dstPath, sqlHeader, 'utf8')
-writeFileSync(dstPath, sqlInsertStatements, { encoding: 'utf8', flag: 'a' })
-
-
-
-
-
-
-
-
-  
-
+writeFileSync(dstPath, sqlInsertStatement, { encoding: 'utf8', flag: 'a' })
